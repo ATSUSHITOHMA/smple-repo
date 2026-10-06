@@ -17,6 +17,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PAGE = ROOT / 'index.html'
 MAX_ITEMS = 5
+# 省庁などの総合フィードは、美容医療に関係する見出しだけを残す（ページ側の絞り込みと同じ語）
+RELEVANT = re.compile('美容|皮膚|レーザ|脱毛|医療広告|ボツリヌス|ヒアルロン|HIFU|ハイフ|未承認|個人輸入|化粧品|医薬部外品|痩身|エステ|再生医療|自由診療|注入|フィラー|ざ瘡|にきび|アートメイク|糸リフト|新医療機器', re.I)
 UA = 'Mozilla/5.0 (compatible; biyou-matome-feed/1.0; +https://github.com/)'
 MARK = re.compile(r'(<script type="application/json" id="feed-snapshot">)(.*?)(</script>)', re.S)
 
@@ -65,7 +67,7 @@ def parse(xml_bytes):
         if title and re.match(r'https?://', link):
             out.append({'t': title[:300], 'u': link, 'd': date})
     out.sort(key=lambda i: i['d'] or '0', reverse=True)
-    return out[:MAX_ITEMS]
+    return out
 
 
 def fetch(url):
@@ -90,6 +92,9 @@ def main():
             items = parse(fetch(s['feed']))
             if not items:
                 raise ValueError('見出しが0件')
+            if s.get('general'):
+                items = [i for i in items if RELEVANT.search(i['t'])]
+            items = items[:MAX_ITEMS]
             docs.append({'id': s['id'], 'name': s['name'], 'cat': s['cat'], 'lang': s['lang'], 'site': s['site'], 'fetched': today, 'items': items})
             ok += 1
         except Exception as e:  # 1媒体の失敗で全体を止めない

@@ -269,7 +269,8 @@
   "cat": "society",
   "lang": "ja",
   "site": "https://www.mhlw.go.jp/",
-  "feed": "https://www.mhlw.go.jp/stf/news.rdf"
+  "feed": "https://www.mhlw.go.jp/stf/news.rdf",
+  "general": true
  },
  {
   "id": "pmda-review",
@@ -277,7 +278,8 @@
   "cat": "society",
   "lang": "ja",
   "site": "https://www.pmda.go.jp/",
-  "feed": "https://www.pmda.go.jp/rss_021.xml"
+  "feed": "https://www.pmda.go.jp/rss_021.xml",
+  "general": true
  },
  {
   "id": "pmda-safety",
@@ -285,7 +287,8 @@
   "cat": "society",
   "lang": "ja",
   "site": "https://www.pmda.go.jp/",
-  "feed": "https://www.pmda.go.jp/rss_018.xml"
+  "feed": "https://www.pmda.go.jp/rss_018.xml",
+  "general": true
  },
  {
   "id": "caa-news",
@@ -293,7 +296,8 @@
   "cat": "society",
   "lang": "ja",
   "site": "https://www.caa.go.jp/",
-  "feed": "https://www.caa.go.jp/news.rss"
+  "feed": "https://www.caa.go.jp/news.rss",
+  "general": true
  },
  {
   "id": "jsas-news",
