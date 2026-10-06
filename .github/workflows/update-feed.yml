@@ -1,0 +1,35 @@
+name: 新着フィードの更新
+
+on:
+  schedule:
+    - cron: '17 21 * * *'   # 毎日 06:17（日本時間）
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-feed
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: フィードを取り直す
+        run: python scripts/update_feed.py
+      - name: 変更があれば反映する
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "変更なし"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add index.html
+            git commit -m "新着フィードを更新"
+            git push
+          fi

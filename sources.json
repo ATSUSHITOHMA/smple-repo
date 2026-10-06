@@ -1,0 +1,442 @@
+[
+ {
+  "id": "miyata-keisei",
+  "name": "美容外科開業医の独り言（みやた形成外科・皮ふクリニック 宮田成章）",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://ameblo.jp/miyatakeisei/",
+  "feed": "https://rssblog.ameba.jp/miyatakeisei/rss20.xml"
+ },
+ {
+  "id": "iwaki-filler-dojo",
+  "name": "Dr.Iwakiのフィラー道場（いわきクリニックIC 岩城佳津美）",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://ameblo.jp/filler-dojo/",
+  "feed": "https://rssblog.ameba.jp/filler-dojo/rss20.xml"
+ },
+ {
+  "id": "hasebe-seven-clinic",
+  "name": "美容外科専門医 セブンクリニック 長谷部医師のブログ",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://ameblo.jp/dr-hasebe/",
+  "feed": "https://rssblog.ameba.jp/dr-hasebe/rss20.xml"
+ },
+ {
+  "id": "miyabi-aya",
+  "name": "ayaの部屋 形成外科医つれづれ記（みやびクリニック aya院長）",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://ameblo.jp/miyabiclinic2/",
+  "feed": "https://rssblog.ameba.jp/miyabiclinic2/rss20.xml"
+ },
+ {
+  "id": "cross-clinic-ishikawa",
+  "name": "『健美同源』クロスクリニック銀座 石川院長のブログ",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://ameblo.jp/cross-clinic/",
+  "feed": "https://rssblog.ameba.jp/cross-clinic/rss20.xml"
+ },
+ {
+  "id": "fujimoto-clinic-f",
+  "name": "新国際学会周遊記｜機器別カテゴリ（クリニックF 藤本幸弘）",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://takahirofujimoto.com/blog/",
+  "feed": "https://takahirofujimoto.com/blog/blog/laser-ipl-rf-plasma-ebmd/feed/"
+ },
+ {
+  "id": "ss-clinic-nagoya",
+  "name": "SSクリニック（名古屋・鶴舞の皮膚科・美容外科）治療解説ブログ",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://www.hifu-ss.com/",
+  "feed": "https://www.hifu-ss.com/feed/"
+ },
+ {
+  "id": "skinrefine-clinic",
+  "name": "スキンリファインクリニック（銀座・吉祥寺）ドクターブログ",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://skinrefine.jp/",
+  "feed": "https://skinrefine.jp/feed/"
+ },
+ {
+  "id": "sunao-clinic-kyoto",
+  "name": "京都 すなおクリニック ブログ（土屋すなお院長ら形成外科専門医）",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://sunao-clinic.com/blog",
+  "feed": "https://sunao-clinic.com/feed/"
+ },
+ {
+  "id": "tsukahara-clinic",
+  "name": "つかはらクリニック院長のブログ",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://www.tsukahara-clinic.com/blog/inchoblog/",
+  "feed": "https://www.tsukahara-clinic.com/blog/inchoblog/?feed=rss2"
+ },
+ {
+  "id": "note-takahashi-eri",
+  "name": "高橋栄里の、肌と美容医療のノート（皮膚科・美容皮膚科医 高橋栄里）",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://note.com/takahashi_eri",
+  "feed": "https://note.com/takahashi_eri/rss"
+ },
+ {
+  "id": "note-koizumi-keisei",
+  "name": "形成外科医 小泉正樹が美容医療の質問に答えます（名古屋 こいずみ形成クリニック）",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://note.com/koizumikeisei",
+  "feed": "https://note.com/koizumikeisei/rss"
+ },
+ {
+  "id": "note-konishi-kazuto",
+  "name": "小西和人（芦屋美容クリニック・形成外科専門医）",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://note.com/rapid_auklet6947",
+  "feed": "https://note.com/rapid_auklet6947/rss"
+ },
+ {
+  "id": "note-onishi-mayo",
+  "name": "大西真代（GRACY TOKYO CLINIC院長・美容外科／皮膚科医）",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://note.com/drmayo_gracy2024",
+  "feed": "https://note.com/drmayo_gracy2024/rss"
+ },
+ {
+  "id": "note-nakano-yoko",
+  "name": "中野陽子｜顔立ちを育てる美容皮膚科医（アートラウンジクリニック院長・麻酔科指導医）",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://note.com/yokonakano",
+  "feed": "https://note.com/yokonakano/rss"
+ },
+ {
+  "id": "note-sugino-aoyama-elu",
+  "name": "杉野宏子（青山エルクリニック院長・形成外科専門医）",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://note.com/aoyama_elu",
+  "feed": "https://note.com/aoyama_elu/rss"
+ },
+ {
+  "id": "note-koyanagi-aohal",
+  "name": "小柳衣吏子（AOHAL CLINIC院長・美容皮膚科医）",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://note.com/daigyojierico",
+  "feed": "https://note.com/daigyojierico/rss"
+ },
+ {
+  "id": "note-kamakura-tatsuro",
+  "name": "鎌倉達郎（聖心美容クリニック統括院長・日本美容外科学会JSAS理事長）",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://note.com/tatsuro_kamakura",
+  "feed": "https://note.com/tatsuro_kamakura/rss"
+ },
+ {
+  "id": "note-konta-yo",
+  "name": "形成外科医/美容外科医 今田 陽",
+  "cat": "blog",
+  "lang": "ja",
+  "site": "https://note.com/dr_konta_",
+  "feed": "https://note.com/dr_konta_/rss"
+ },
+ {
+  "id": "yt-tomori-arata",
+  "name": "友利新公式チャンネル(内科・皮膚科医)",
+  "cat": "youtube",
+  "lang": "ja",
+  "site": "https://www.youtube.com/channel/UCS02b3Y9RCzsT2k4no6LN-g",
+  "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UCS02b3Y9RCzsT2k4no6LN-g"
+ },
+ {
+  "id": "yt-tamaki-yuki",
+  "name": "玉城有紀 / 医師「皮膚科・美容皮膚科」",
+  "cat": "youtube",
+  "lang": "ja",
+  "site": "https://www.youtube.com/channel/UCWbe434EGqueTHMdn3hUXwg",
+  "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UCWbe434EGqueTHMdn3hUXwg"
+ },
+ {
+  "id": "yt-hanafusa-takaaki",
+  "name": "花ふさ皮ふ科（大阪北摂）/ 医師 花房崇明「皮膚科・美容皮膚科」",
+  "cat": "youtube",
+  "lang": "ja",
+  "site": "https://www.youtube.com/channel/UCO5bHukoLSEbLJ1ngXdET-A",
+  "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UCO5bHukoLSEbLJ1ngXdET-A"
+ },
+ {
+  "id": "yt-eri-takahashi",
+  "name": "えりちゃん先生channel（美容皮膚科医 高橋栄里）",
+  "cat": "youtube",
+  "lang": "ja",
+  "site": "https://www.youtube.com/channel/UCFF_ttLD_0xQxODcJ-nHH8A",
+  "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UCFF_ttLD_0xQxODcJ-nHH8A"
+ },
+ {
+  "id": "yt-dr-miko",
+  "name": "「皮膚科専門医」Dr.mikoの美容チャンネル",
+  "cat": "youtube",
+  "lang": "ja",
+  "site": "https://www.youtube.com/channel/UCJN0uedgggJ1gZbH5cyTiqQ",
+  "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UCJN0uedgggJ1gZbH5cyTiqQ"
+ },
+ {
+  "id": "yt-shirono-clinic",
+  "name": "美容皮膚科シロノクリニック",
+  "cat": "youtube",
+  "lang": "ja",
+  "site": "https://www.youtube.com/channel/UC0BEsuNPUlgUTif-Z8SpkpA",
+  "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UC0BEsuNPUlgUTif-Z8SpkpA"
+ },
+ {
+  "id": "yt-ss-clinic",
+  "name": "【SSクリニック】院長のひとこと言わせてチャンネル",
+  "cat": "youtube",
+  "lang": "ja",
+  "site": "https://www.youtube.com/channel/UCDEAubyPgTPUcptQPdXCY0Q",
+  "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UCDEAubyPgTPUcptQPdXCY0Q"
+ },
+ {
+  "id": "yt-skinrefine",
+  "name": "スキンリファインクリニック銀座",
+  "cat": "youtube",
+  "lang": "ja",
+  "site": "https://www.youtube.com/channel/UCIszqf8894yZq2Ir6CPrhxA",
+  "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UCIszqf8894yZq2Ir6CPrhxA"
+ },
+ {
+  "id": "yt-sunao-clinic",
+  "name": "京都のすなおクリニック",
+  "cat": "youtube",
+  "lang": "ja",
+  "site": "https://www.youtube.com/channel/UC67KyIZfVDYPPU8wQmsW9Jw",
+  "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UC67KyIZfVDYPPU8wQmsW9Jw"
+ },
+ {
+  "id": "yt-dr-tim-pearce",
+  "name": "Dr Tim Pearce",
+  "cat": "youtube",
+  "lang": "en",
+  "site": "https://www.youtube.com/channel/UCXxVLeX27Pi3VeBbDRrKfKg",
+  "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UCXxVLeX27Pi3VeBbDRrKfKg"
+ },
+ {
+  "id": "yt-dr-davin-lim",
+  "name": "Dr Davin Lim",
+  "cat": "youtube",
+  "lang": "en",
+  "site": "https://www.youtube.com/channel/UC9SIYzAqsCmfHsZrxdPGvzA",
+  "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UC9SIYzAqsCmfHsZrxdPGvzA"
+ },
+ {
+  "id": "yt-asds-skin-md",
+  "name": "ASDS Skin MD（American Society for Dermatologic Surgery）",
+  "cat": "youtube",
+  "lang": "en",
+  "site": "https://www.youtube.com/channel/UCIgr0X0WtjGR_aadOQozTFA",
+  "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UCIgr0X0WtjGR_aadOQozTFA"
+ },
+ {
+  "id": "yt-imcas-congress",
+  "name": "IMCAS Congress",
+  "cat": "youtube",
+  "lang": "en",
+  "site": "https://www.youtube.com/channel/UC4LiH649XPSX3uZYuuwS4WA",
+  "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UC4LiH649XPSX3uZYuuwS4WA"
+ },
+ {
+  "id": "yt-harley-academy",
+  "name": "Harley Academy 💉 Medical Aesthetics Training",
+  "cat": "youtube",
+  "lang": "en",
+  "site": "https://www.youtube.com/channel/UC7I5CMnNpe8F2Ux0BHZAVyA",
+  "feed": "https://www.youtube.com/feeds/videos.xml?channel_id=UC7I5CMnNpe8F2Ux0BHZAVyA"
+ },
+ {
+  "id": "mhlw-news",
+  "name": "厚生労働省 新着情報",
+  "cat": "society",
+  "lang": "ja",
+  "site": "https://www.mhlw.go.jp/",
+  "feed": "https://www.mhlw.go.jp/stf/news.rdf"
+ },
+ {
+  "id": "pmda-review",
+  "name": "PMDA 承認審査 新着",
+  "cat": "society",
+  "lang": "ja",
+  "site": "https://www.pmda.go.jp/",
+  "feed": "https://www.pmda.go.jp/rss_021.xml"
+ },
+ {
+  "id": "pmda-safety",
+  "name": "PMDA 安全対策 新着",
+  "cat": "society",
+  "lang": "ja",
+  "site": "https://www.pmda.go.jp/",
+  "feed": "https://www.pmda.go.jp/rss_018.xml"
+ },
+ {
+  "id": "caa-news",
+  "name": "消費者庁 新着情報",
+  "cat": "society",
+  "lang": "ja",
+  "site": "https://www.caa.go.jp/",
+  "feed": "https://www.caa.go.jp/news.rss"
+ },
+ {
+  "id": "jsas-news",
+  "name": "日本美容外科学会（JSAS）お知らせ",
+  "cat": "society",
+  "lang": "ja",
+  "site": "https://jsas.or.jp/",
+  "feed": "https://jsas.or.jp/news/feed/"
+ },
+ {
+  "id": "jslsm-news",
+  "name": "日本レーザー医学会 お知らせ",
+  "cat": "society",
+  "lang": "ja",
+  "site": "https://www.jslsm.or.jp/",
+  "feed": "https://www.jslsm.or.jp/news/feed/"
+ },
+ {
+  "id": "hifuko-news-japan",
+  "name": "ヒフコNEWS 国内",
+  "cat": "news",
+  "lang": "ja",
+  "site": "https://biyouhifuko.com/news",
+  "feed": "https://biyouhifuko.com/news/japan/feed/"
+ },
+ {
+  "id": "hifuko-news-world",
+  "name": "ヒフコNEWS 海外",
+  "cat": "news",
+  "lang": "ja",
+  "site": "https://biyouhifuko.com/news",
+  "feed": "https://biyouhifuko.com/news/world/feed/"
+ },
+ {
+  "id": "hifuko-news-research",
+  "name": "ヒフコNEWS 最新研究",
+  "cat": "news",
+  "lang": "ja",
+  "site": "https://biyouhifuko.com/news",
+  "feed": "https://biyouhifuko.com/news/research/feed/"
+ },
+ {
+  "id": "bing-biyou-iryou",
+  "name": "Bingニュース「美容医療」",
+  "cat": "news",
+  "lang": "ja",
+  "site": "https://www.bing.com/news",
+  "feed": "https://www.bing.com/news/search?q=%E7%BE%8E%E5%AE%B9%E5%8C%BB%E7%99%82&qft=sortbydate%3d%221%22&format=rss"
+ },
+ {
+  "id": "bhn",
+  "name": "美容経済新聞",
+  "cat": "news",
+  "lang": "ja",
+  "site": "https://bhn.jp/",
+  "feed": "https://bhn.jp/feed/"
+ },
+ {
+  "id": "dermatology-times",
+  "name": "Dermatology Times",
+  "cat": "news",
+  "lang": "en",
+  "site": "https://www.dermatologytimes.com/",
+  "feed": "https://www.dermatologytimes.com/rss"
+ },
+ {
+  "id": "aesthetic-guide",
+  "name": "The Aesthetic Guide",
+  "cat": "news",
+  "lang": "en",
+  "site": "https://www.theaestheticguide.com/",
+  "feed": "https://www.theaestheticguide.com/rss.xml"
+ },
+ {
+  "id": "plastic-surgery-practice",
+  "name": "Plastic Surgery Practice",
+  "cat": "news",
+  "lang": "en",
+  "site": "https://plasticsurgerypractice.com/",
+  "feed": "https://plasticsurgerypractice.com/feed/"
+ },
+ {
+  "id": "aesthetics-journal-uk",
+  "name": "Aesthetics Journal（英国）",
+  "cat": "news",
+  "lang": "en",
+  "site": "https://aestheticsjournal.com/",
+  "feed": "https://aestheticsjournal.com/feed/"
+ },
+ {
+  "id": "healio-dermatology",
+  "name": "Healio Dermatology",
+  "cat": "news",
+  "lang": "en",
+  "site": "https://www.healio.com/news/dermatology",
+  "feed": "https://www.healio.com/sws/feed/news/dermatology"
+ },
+ {
+  "id": "aesthetic-surgery-journal",
+  "name": "Aesthetic Surgery Journal",
+  "cat": "journal",
+  "lang": "en",
+  "site": "https://academic.oup.com/asj",
+  "feed": "https://academic.oup.com/rss/site_5358/3219.xml"
+ },
+ {
+  "id": "jama-dermatology",
+  "name": "JAMA Dermatology",
+  "cat": "journal",
+  "lang": "en",
+  "site": "https://jamanetwork.com/journals/jamadermatology",
+  "feed": "https://jamanetwork.com/rss/site_12/68.xml"
+ },
+ {
+  "id": "bjd",
+  "name": "British Journal of Dermatology",
+  "cat": "journal",
+  "lang": "en",
+  "site": "https://academic.oup.com/bjd",
+  "feed": "https://academic.oup.com/rss/site_6497/4139.xml"
+ },
+ {
+  "id": "jdd",
+  "name": "Journal of Drugs in Dermatology（JDDonline）",
+  "cat": "journal",
+  "lang": "en",
+  "site": "https://jddonline.com/",
+  "feed": "https://jddonline.com/feed/"
+ },
+ {
+  "id": "jcas",
+  "name": "Journal of Cutaneous and Aesthetic Surgery",
+  "cat": "journal",
+  "lang": "en",
+  "site": "https://jcasonline.com/",
+  "feed": "https://jcasonline.com/feed/"
+ },
+ {
+  "id": "mdpi-cosmetics",
+  "name": "Cosmetics（MDPI）",
+  "cat": "journal",
+  "lang": "en",
+  "site": "https://www.mdpi.com/journal/cosmetics",
+  "feed": "https://www.mdpi.com/rss/journal/cosmetics"
+ }
+]
