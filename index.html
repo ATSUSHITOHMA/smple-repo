@@ -614,7 +614,8 @@ footer{padding-block:18px 26px;font-size:12px;color:var(--ink-2)}
   function count(facet, test){ var n=0; items.forEach(function(it){ if(match(it,facet) && test(it)) n++; }); return n; }
 
   /* ---------- pages ---------- */
-  function go(page, arg, keepScroll){
+  var started = false;
+  function go(page, arg, keepScroll, fromHistory){
     if(state.page==='catalog') state.catY = window.scrollY;
     if(page==='article'){ if(!artById[arg]) page='articles'; else state.art = arg; }
     if(page==='item'){ if(!byId[arg]) page='catalog'; else { if(state.page!=='item') state.from = state.page; state.item = arg; } }
@@ -635,7 +636,8 @@ footer{padding-block:18px 26px;font-size:12px;color:var(--ink-2)}
     if(page==='comps') renderComps();
     if(page==='comp') renderComp();
     renderTray();
-    try{ history.replaceState(null,'','#'+(DETAIL[page] ? DETAIL[page]+'.'+({article:state.art,item:state.item,cond:state.cond,comp:state.comp}[page]) : page)); }catch(e){}
+    var hash = '#'+(DETAIL[page] ? DETAIL[page]+'.'+({article:state.art,item:state.item,cond:state.cond,comp:state.comp}[page]) : page);
+    try{ if(fromHistory || !started) history.replaceState(null,'',hash); else if(location.hash!==hash) history.pushState(null,'',hash); }catch(e){}
     window.scrollTo(0, keepScroll && page==='catalog' ? state.catY : 0);
   }
   function resetFilters(){ state.kind='all'; state.q=''; state.cat.clear(); state.sub.clear(); state.use.clear(); state.layer.clear(); state.status.clear(); state.gl=false; state.fav=false; $('q').value=''; }
@@ -1097,9 +1099,15 @@ footer{padding-block:18px 26px;font-size:12px;color:var(--ink-2)}
   })();
   renderHome();
   var start = (location.hash||'').replace('#','');
-  var det = null; Object.keys(DETAIL).forEach(function(k){ if(start.indexOf(DETAIL[k]+'.')===0) det = k; });
-  if(det) go(det, start.slice(2));
-  else go(PAGES.indexOf(start)>=0 && !DETAIL[start] ? start : 'home');
+  function route(h, fromHistory){
+    var det = null; Object.keys(DETAIL).forEach(function(k){ if(h.indexOf(DETAIL[k]+'.')===0) det = k; });
+    if(det) go(det, h.slice(2), false, fromHistory);
+    else go(PAGES.indexOf(h)>=0 && !DETAIL[h] ? h : 'home', null, false, fromHistory);
+  }
+  route(start, true);
+  started = true;
+  /* ブラウザの「戻る」「進む」と、アドレス欄での # の書き換えに追従する */
+  window.addEventListener('popstate', function(){ route((location.hash||'').replace('#',''), true); });
   loadFeed();
 })();
 </script>
