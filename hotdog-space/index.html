@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="ホットドッグ姿のダックスフンドが宇宙を飛び、月に着陸する20秒のアニメーション">
+<style>*,*::before,*::after{box-sizing:border-box}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,sans-serif}[hidden]{display:none!important}</style>
+<title>宇宙ダックス ホットドッグ号</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@500;700&display=swap">
+<style>
+/* Layout: one cinema screen, a quiet title above, a slim transport bar below. Deliberately single dark theme (space). */
+:root {
+  --space: #0a0c22;
+  --panel: #14173a;
+  --line: #2a2f63;
+  --ink: #eef0ff;
+  --muted: #9aa0d6;
+  --mustard: #ffd23a;
+  --ketchup: #e8402f;
+  --display: "Dela Gothic One", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --body: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+  color-scheme: dark;
+}
+html, body { background: var(--space); color: var(--ink); }
+body { font-family: var(--body); }
+.wrap {
+  max-width: 1040px; margin: 0 auto;
+  padding-block: 20px 32px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 14px;
+}
+header { display: flex; align-items: baseline; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(20px, 4vw, 28px); margin: 0; letter-spacing: .02em; text-wrap: balance; }
+h1 span { color: var(--mustard); }
+.tag { font-size: 12px; color: var(--muted); letter-spacing: .14em; text-transform: uppercase; }
+.screen {
+  position: relative; width: 100%; max-width: 100%; aspect-ratio: 16 / 9;
+  border-radius: 14px; overflow: hidden; background: #050616;
+  box-shadow: 0 0 0 1px var(--line), 0 20px 60px -20px rgba(0,0,0,.8);
+}
+canvas { display: block; width: 100%; height: 100%; cursor: pointer; }
+.bar { display: flex; align-items: center; gap: 12px; background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px 6px 6px; }
+.btn {
+  flex: none; width: 40px; height: 40px; border-radius: 50%; border: 0; cursor: pointer;
+  background: var(--mustard); color: #2a1c00; display: grid; place-items: center;
+}
+.btn.ghost { background: transparent; color: var(--ink); width: 36px; height: 36px; }
+.btn:focus-visible, input[type=range]:focus-visible { outline: 2px solid var(--mustard); outline-offset: 2px; }
+.btn svg { width: 18px; height: 18px; fill: currentColor; }
+input[type=range] { flex: 1; min-width: 0; accent-color: var(--ketchup); height: 24px; }
+.time { flex: none; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.scenes { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.scenes button {
+  font: 500 13px var(--body); color: var(--muted); background: transparent; cursor: pointer;
+  border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px;
+}
+.scenes button[aria-current="true"] { color: #2a1c00; background: var(--mustard); border-color: var(--mustard); }
+.scenes button:focus-visible { outline: 2px solid var(--mustard); outline-offset: 2px; }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>宇宙ダックス <span>ホットドッグ号</span></h1>
+    <div class="tag">Hot dog × Dachshund × Space · 0:20</div>
+  </header>
+
+  <div class="screen"><canvas id="cv" aria-label="ホットドッグの衣装を着たダックスフンドが宇宙を飛び、月に着陸するアニメーション"></canvas></div>
+
+  <div class="bar">
+    <button class="btn" id="play" aria-label="一時停止"></button>
+    <button class="btn ghost" id="restart" aria-label="最初から再生">
+      <svg viewBox="0 0 24 24"><path d="M12 5V2L7 6l5 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z"/></svg>
+    </button>
+    <input type="range" id="scrub" min="0" max="200" step="1" value="0" aria-label="再生位置">
+    <span class="time" id="time">0:00 / 0:20</span>
+  </div>
+
+  <ul class="scenes" id="scenes"></ul>
+</div>
+
+<script>
+(() => {
+  const W = 1280, H = 720, DUR = 20;
+  const cv = document.getElementById('cv');
+  const ctx = cv.getContext('2d');
+  const C = {
+    fur: '#a24f24', furDark: '#6b2c12', bun: '#eab267', bunDark: '#c9833a',
+    mustard: '#ffd23a', ketchup: '#e8402f', ink: '#eef0ff'
+  };
+  const SCENES = [
+    { t: 0,  end: 4,  name: '出発',           title: 'ホットドッグ号、出発',          sub: 'EP.01  宇宙ダックスの大冒険' },
+    { t: 4,  end: 9,  name: 'マスタード噴射', title: 'マスタード・ブースター全開！',  sub: '速度 マッハ12  しっぽ 最高速' },
+    { t: 9,  end: 14, name: 'ケチャップ惑星', title: 'ケチャップリングの惑星を通過',  sub: 'ウインナー小惑星帯に注意' },
+    { t: 14, end: 20, name: '月面着陸',       title: '月面着陸、成功！',              sub: 'おやつの時間です' }
+  ];
+
+  // ---------- helpers ----------
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const lerp = (a, b, p) => a + (b - a) * p;
+  const eOut = p => 1 - Math.pow(1 - p, 3);
+  const eIO = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+  const prog = (T, a, b) => clamp((T - a) / (b - a), 0, 1);
+  function rr(x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  }
+  function ell(x, y, rx, ry, rot = 0) { ctx.beginPath(); ctx.ellipse(x, y, rx, ry, rot, 0, Math.PI * 2); }
+
+  // ---------- canvas sizing ----------
+  let scale = 1;
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = Math.round(cv.clientWidth * dpr);
+    cv.height = Math.round(cv.clientHeight * dpr);
+    scale = cv.width / W;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // ---------- stars & particles ----------
+  const stars = Array.from({ length: 260 }, () => ({ x: Math.random() * W, y: Math.random() * H, d: Math.random() * .9 + .1, tw: Math.random() * 6 }));
+  let starSpeed = 1;
+  let parts = [];
+
+  function starTarget(T) {
+    if (T < 4) return 1.2;
+    if (T < 9) return T < 4.6 ? 2 : 17;
+    if (T < 14) return 4.5;
+    return lerp(3, 0.15, prog(T, 14, 17));
+  }
+
+  // ---------- drawing ----------
+  function background(T) {
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, '#060818'); g.addColorStop(1, '#151339');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    const neb = (x, y, r, col) => {
+      const rg = ctx.createRadialGradient(x, y, 0, x, y, r);
+      rg.addColorStop(0, col); rg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H);
+    };
+    const drift = (T * 6) % 1600;
+    neb(900 - drift * .3, 160, 420, 'rgba(190,60,150,0.16)');
+    neb(260 - drift * .2 + 400, 600, 480, 'rgba(40,170,190,0.12)');
+  }
+
+  function drawStars(T, dt) {
+    for (const s of stars) {
+      s.x -= starSpeed * s.d * dt * 60;
+      if (s.x < -60) { s.x = W + Math.random() * 60; s.y = Math.random() * H; }
+      const len = starSpeed * s.d * 4;
+      const a = .35 + .65 * s.d * (.75 + .25 * Math.sin(T * 3 + s.tw));
+      if (len > 6) {
+        ctx.strokeStyle = `rgba(230,236,255,${a})`;
+        ctx.lineWidth = s.d * 2;
+        ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(s.x + len, s.y); ctx.stroke();
+      } else {
+        ctx.fillStyle = `rgba(230,236,255,${a})`;
+        ctx.fillRect(s.x, s.y, s.d * 2.4, s.d * 2.4);
+      }
+    }
+  }
+
+  function drawSausage(x, y, len, rot) {
+    ctx.save(); ctx.translate(x, y); ctx.rotate(rot);
+    rr(-len / 2, -len * .16, len, len * .32, len * .16);
+    ctx.fillStyle = '#b4472b'; ctx.fill();
+    ctx.strokeStyle = 'rgba(255,200,170,.45)'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(-len * .3, -len * .07); ctx.lineTo(len * .3, -len * .07); ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawPlanet(px, py, r, T) {
+    const tilt = -0.28;
+    const ring = (from, to) => {
+      ctx.save(); ctx.translate(px, py); ctx.rotate(tilt);
+      ctx.lineCap = 'butt';
+      ctx.strokeStyle = 'rgba(232,64,47,0.95)'; ctx.lineWidth = 22;
+      ctx.beginPath(); ctx.ellipse(0, 0, r * 2.0, r * .46, 0, from, to); ctx.stroke();
+      ctx.strokeStyle = 'rgba(255,210,58,0.85)'; ctx.lineWidth = 6;
+      ctx.beginPath(); ctx.ellipse(0, 0, r * 2.28, r * .54, 0, from, to); ctx.stroke();
+      ctx.restore();
+    };
+    ring(Math.PI, Math.PI * 2);
+    const g = ctx.createRadialGradient(px - r * .4, py - r * .4, r * .1, px, py, r);
+    g.addColorStop(0, '#9be8d6'); g.addColorStop(.55, '#2f8496'); g.addColorStop(1, '#1a2552');
+    ell(px, py, r, r); ctx.fillStyle = g; ctx.fill();
+    ctx.save(); ell(px, py, r, r); ctx.clip();
+    ctx.globalAlpha = .18; ctx.fillStyle = '#ffffff';
+    for (let i = 0; i < 4; i++) { ell(px + Math.sin(T + i) * 10, py - r * .5 + i * r * .32, r * 1.2, r * .07, tilt); ctx.fill(); }
+    ctx.restore();
+    ring(0, Math.PI);
+  }
+
+  function drawMoon(mx, my, r) {
+    const g = ctx.createRadialGradient(mx - r * .3, my - r * .6, r * .2, mx, my, r);
+    g.addColorStop(0, '#f2ecd6'); g.addColorStop(1, '#a9a28a');
+    ell(mx, my, r, r); ctx.fillStyle = g; ctx.fill();
+    ctx.save(); ell(mx, my, r, r); ctx.clip();
+    ctx.fillStyle = 'rgba(120,112,90,0.35)';
+    [[-260, -560, 60], [-80, -600, 30], [180, -580, 48], [330, -500, 70], [-420, -440, 50], [60, -500, 22]]
+      .forEach(([dx, dy, cr]) => { ell(mx + dx, my + dy, cr, cr * .35); ctx.fill(); });
+    ctx.restore();
+  }
+
+  function drawEarth(x, y, r) {
+    const g = ctx.createRadialGradient(x - r * .3, y - r * .3, r * .1, x, y, r);
+    g.addColorStop(0, '#7fc8ff'); g.addColorStop(1, '#1f4fa0');
+    ell(x, y, r, r); ctx.fillStyle = g; ctx.fill();
+    ctx.save(); ell(x, y, r, r); ctx.clip();
+    ctx.fillStyle = '#5fbf6a';
+    ell(x - r * .3, y - r * .1, r * .35, r * .5, .4); ctx.fill();
+    ell(x + r * .4, y + r * .35, r * .3, r * .2); ctx.fill();
+    ctx.restore();
+  }
+
+  function drawFlag(x, y, h, T) {
+    ctx.strokeStyle = '#d9dbe8'; ctx.lineWidth = 5; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y - h); ctx.stroke();
+    if (h < 40) return;
+    const top = y - h, fw = 110, fh = 70;
+    ctx.beginPath(); ctx.moveTo(x, top);
+    for (let i = 0; i <= 10; i++) ctx.lineTo(x + fw * i / 10, top + Math.sin(T * 5 + i * .7) * 4);
+    for (let i = 10; i >= 0; i--) ctx.lineTo(x + fw * i / 10, top + fh + Math.sin(T * 5 + i * .7) * 4);
+    ctx.closePath(); ctx.fillStyle = '#f7f3e8'; ctx.fill();
+    const cx = x + fw / 2, cy = top + fh / 2 + Math.sin(T * 5 + 3.5) * 4;
+    rr(cx - 34, cy - 8, 68, 22, 11); ctx.fillStyle = C.bun; ctx.fill();
+    rr(cx - 40, cy - 12, 80, 14, 7); ctx.fillStyle = C.ketchup; ctx.fill();
+    ctx.strokeStyle = C.mustard; ctx.lineWidth = 3; ctx.beginPath();
+    for (let i = 0; i <= 12; i++) ctx.lineTo(cx - 32 + i * 64 / 12, cy - 6 + (i % 2 ? -3 : 3));
+    ctx.stroke();
+  }
+
+  function drawDog(o, T) {
+    const { x, y, s, rot, legs, wagSpeed, earFlap, tongue } = o;
+    ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.scale(s, s);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+
+    // tail
+    ctx.save(); ctx.translate(-146, -18); ctx.rotate(-0.5 + Math.sin(T * wagSpeed) * 0.45);
+    ctx.beginPath(); ctx.moveTo(0, -7); ctx.quadraticCurveTo(-30, -22, -58, -34);
+    ctx.quadraticCurveTo(-34, -10, 0, 9); ctx.closePath(); ctx.fillStyle = C.furDark; ctx.fill();
+    ctx.restore();
+
+    // legs (back pair darker, behind)
+    const leg = (lx, phase, col) => {
+      ctx.save(); ctx.translate(lx, 26); ctx.rotate(Math.sin(T * 14 + phase) * legs);
+      rr(-9, 0, 18, 48, 9); ctx.fillStyle = col; ctx.fill();
+      ell(4, 46, 13, 7); ctx.fill();
+      ctx.restore();
+    };
+    leg(-78, Math.PI, C.furDark); leg(108, 0, C.furDark);
+    leg(-100, 0, C.fur); leg(86, Math.PI, C.fur);
+
+    // mustard-bottle jetpack
+    ctx.save(); ctx.translate(-40, -66);
+    rr(-62, -18, 84, 36, 14); ctx.fillStyle = C.mustard; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-62, -12); ctx.lineTo(-90, -3); ctx.lineTo(-90, 3); ctx.lineTo(-62, 12); ctx.closePath();
+    ctx.fillStyle = '#e8a91a'; ctx.fill();
+    rr(-20, -18, 14, 36, 3); ctx.fillStyle = C.ketchup; ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,.55)'; rr(-50, -12, 40, 6, 3); ctx.fill();
+    ctx.restore();
+    ctx.strokeStyle = '#3b2a5a'; ctx.lineWidth = 7;
+    ctx.beginPath(); ctx.moveTo(-60, -50); ctx.lineTo(-50, -30); ctx.moveTo(-14, -50); ctx.lineTo(-4, -30); ctx.stroke();
+
+    // body
+    rr(-152, -46, 304, 92, 46); ctx.fillStyle = C.fur; ctx.fill();
+
+    // bun
+    const bg = ctx.createLinearGradient(0, -10, 0, 58);
+    bg.addColorStop(0, '#f6c784'); bg.addColorStop(1, C.bunDark);
+    rr(-138, -10, 276, 66, 33); ctx.fillStyle = bg; ctx.fill();
+    ctx.strokeStyle = 'rgba(255,240,210,.5)'; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(-110, 4); ctx.lineTo(100, 4); ctx.stroke();
+    // mustard squiggle
+    ctx.strokeStyle = C.mustard; ctx.lineWidth = 10;
+    ctx.beginPath();
+    for (let i = 0; i <= 40; i++) { const px = -118 + i * 236 / 40; ctx.lineTo(px, -10 + Math.sin(i * 1.05) * 8); }
+    ctx.stroke();
+
+    // neck + head
+    ell(138, -26, 32, 34); ctx.fillStyle = C.fur; ctx.fill();
+    ell(168, -42, 40, 38); ctx.fill();
+    ell(208, -28, 36, 20); ctx.fill();
+    ell(240, -34, 9, 7); ctx.fillStyle = '#1b0f0a'; ctx.fill();
+    ctx.strokeStyle = C.furDark; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(236, -16); ctx.quadraticCurveTo(222, -10, 206, -14); ctx.stroke();
+    if (tongue) { ell(214, -6, 7, 11, .2); ctx.fillStyle = '#ff7f9a'; ctx.fill(); }
+    // eye
+    ell(182, -55, 6.5, 7.5); ctx.fillStyle = '#1b0f0a'; ctx.fill();
+    ell(184.5, -58, 2.2, 2.2); ctx.fillStyle = '#fff'; ctx.fill();
+    ell(176, -66, 5, 3, -.3); ctx.fillStyle = '#d9894f'; ctx.fill();
+    // ear
+    ctx.save(); ctx.translate(152, -64); ctx.rotate(0.35 + Math.sin(T * 9) * 0.3 * earFlap);
+    ell(-2, 30, 16, 34); ctx.fillStyle = C.furDark; ctx.fill();
+    ctx.restore();
+
+    // helmet
+    ell(130, -28, 15, 46, -.15); ctx.fillStyle = '#c7cfe3'; ctx.fill();
+    ctx.strokeStyle = '#8c95b8'; ctx.lineWidth = 3; ctx.stroke();
+    ell(182, -40, 76, 74); ctx.fillStyle = 'rgba(170,215,255,0.12)'; ctx.fill();
+    ctx.strokeStyle = 'rgba(220,240,255,0.7)'; ctx.lineWidth = 3; ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.lineWidth = 6;
+    ctx.beginPath(); ctx.arc(182, -40, 60, Math.PI * 1.1, Math.PI * 1.45); ctx.stroke();
+
+    ctx.restore();
+    // jet nozzle in world space
+    const lx = -132, ly = -66, c = Math.cos(rot), sn = Math.sin(rot);
+    return { nx: x + s * (c * lx - sn * ly), ny: y + s * (sn * lx + c * ly) };
+  }
+
+  function exhaust(noz, thrust, dt) {
+    const n = Math.round(thrust * 5 * dt * 60);
+    for (let i = 0; i < n; i++) {
+      parts.push({ x: noz.nx, y: noz.ny + (Math.random() - .5) * 6,
+        vx: -(5 + Math.random() * 6) * (0.6 + thrust), vy: (Math.random() - .5) * 2.2,
+        life: 1, size: 8 + Math.random() * 10 * (0.5 + thrust) });
+    }
+    if (thrust > .05) {
+      const rg = ctx.createRadialGradient(noz.nx, noz.ny, 0, noz.nx, noz.ny, 50 * thrust + 10);
+      rg.addColorStop(0, 'rgba(255,230,120,0.9)'); rg.addColorStop(1, 'rgba(255,150,40,0)');
+      ctx.fillStyle = rg; ctx.fillRect(noz.nx - 80, noz.ny - 80, 160, 160);
+    }
+  }
+  function drawParts(dt) {
+    for (const p of parts) {
+      p.x += p.vx * dt * 60; p.y += p.vy * dt * 60; p.life -= dt * 1.6; p.size *= (1 - dt * .8);
+    }
+    parts = parts.filter(p => p.life > 0);
+    for (const p of parts) {
+      const hot = p.life > .6;
+      ctx.fillStyle = hot ? `rgba(255,224,90,${p.life})` : `rgba(255,140,50,${p.life * .8})`;
+      ell(p.x, p.y, p.size, p.size * .8); ctx.fill();
+    }
+  }
+
+  function caption(T) {
+    const sc = SCENES.find(s => T >= s.t && T < s.end) || SCENES[3];
+    let a = Math.min(prog(T, sc.t + .2, sc.t + .7), 1 - prog(T, sc.end - .5, sc.end - .1));
+    if (sc.t === 0) a = Math.min(a, prog(T, 3.0, 3.6));
+    if (a <= 0) return;
+    ctx.save(); ctx.globalAlpha = a;
+    const slide = (1 - a) * 20;
+    ctx.font = '40px "Dela Gothic One", "Hiragino Sans", sans-serif';
+    const tw = ctx.measureText(sc.title).width;
+    ctx.font = '500 20px "Zen Maru Gothic", "Hiragino Sans", sans-serif';
+    const sw = ctx.measureText(sc.sub).width;
+    const bw = Math.max(tw, sw) + 56, bx = 48 - slide, by = H - 150;
+    rr(bx, by, bw, 104, 18); ctx.fillStyle = 'rgba(10,12,34,0.72)'; ctx.fill();
+    ctx.fillStyle = C.mustard; rr(bx, by, 8, 104, 4); ctx.fill();
+    ctx.fillStyle = C.ink; ctx.font = '40px "Dela Gothic One", "Hiragino Sans", sans-serif';
+    ctx.fillText(sc.title, bx + 30, by + 54);
+    ctx.fillStyle = '#b8bdf0'; ctx.font = '500 20px "Zen Maru Gothic", "Hiragino Sans", sans-serif';
+    ctx.fillText(sc.sub, bx + 30, by + 86);
+    ctx.restore();
+  }
+
+  function titleCard(T) {
+    const a = 1 - prog(T, 2.6, 3.4);
+    if (a <= 0) return;
+    ctx.save(); ctx.globalAlpha = a; ctx.textAlign = 'center';
+    const pop = 0.85 + 0.15 * eOut(prog(T, 0, .8));
+    ctx.translate(W / 2, 250); ctx.scale(pop, pop);
+    ctx.font = '96px "Dela Gothic One", "Hiragino Sans", sans-serif';
+    ctx.lineWidth = 14; ctx.strokeStyle = C.ketchup; ctx.lineJoin = 'round';
+    ctx.strokeText('ホットドッグ号', 0, 0);
+    ctx.fillStyle = C.mustard; ctx.fillText('ホットドッグ号', 0, 0);
+    ctx.font = '700 22px "Zen Maru Gothic", sans-serif'; ctx.fillStyle = C.ink;
+    ctx.fillText('HOT DOG  ×  DACHSHUND  ×  SPACE', 0, 56);
+    ctx.restore();
+  }
+
+  function dogState(T) {
+    const o = { s: .85, legs: .45, wagSpeed: 10, earFlap: .5, tongue: false };
+    let thrust;
+    if (T < 4) {
+      o.x = lerp(-280, 460, eOut(prog(T, 0, 3.6))); o.y = 400 + Math.sin(T * 2) * 12;
+      o.rot = -0.05 + Math.sin(T * 1.5) * 0.03; thrust = .35;
+    } else if (T < 9) {
+      const k = prog(T, 4, 4.6);
+      o.x = 460 + 60 * eIO(k) + Math.sin(T * 1.3) * 26; o.y = 380 + Math.sin(T * 2.3) * 18;
+      o.rot = -0.04 - 0.1 * k; thrust = .35 + .65 * k; o.legs = .75; o.earFlap = 1.3; o.wagSpeed = 18;
+    } else if (T < 14) {
+      const k = prog(T, 9, 9.8);
+      o.x = lerp(520, 470, eIO(k)) + Math.sin(T) * 18; o.y = 400 + Math.sin(T * 1.7) * 26;
+      o.rot = -0.14 + .1 * k + Math.sin(T * 1.1) * 0.05; thrust = lerp(1, .5, k); o.earFlap = .8;
+    } else {
+      const p = eIO(prog(T, 14, 17));
+      const my = moonY(T), dx = 560 * 1 - 640;
+      const surf = my - Math.sqrt(640 * 640 - dx * dx);
+      const landY = surf - 74 * o.s;
+      o.x = lerp(480, 560, p); o.y = lerp(330, landY, p);
+      if (T > 17) { const u = T - 17; o.y -= Math.abs(Math.sin(u * 7)) * 18 * Math.exp(-u * 3); }
+      o.rot = lerp(-0.08, 0, p); thrust = .5 * (1 - p);
+      o.legs = lerp(.45, 0, p); o.earFlap = T > 17 ? .4 : .6;
+      o.wagSpeed = T > 17 ? 26 : 12; o.tongue = T > 17.2;
+    }
+    o.thrust = thrust;
+    return o;
+  }
+  const moonY = T => lerp(1500, 1180, eOut(prog(T, 14, 16.2)));
+
+  function frame(T, dt) {
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    starSpeed += (starTarget(T) - starSpeed) * Math.min(1, dt * 2.5);
+
+    let shake = 0;
+    if (T >= 4.4 && T < 9) shake = 2.5 * (1 - prog(T, 8, 9));
+    ctx.save();
+    ctx.translate(Math.sin(T * 47) * shake, Math.cos(T * 39) * shake);
+
+    background(T);
+    drawStars(T, dt);
+
+    // distant planet in opening
+    if (T < 5) { ctx.globalAlpha = 1 - prog(T, 4, 5); drawPlanet(1010 - T * 12, 170, 34, T); ctx.globalAlpha = 1; }
+
+    // ketchup planet + sausage asteroids
+    if (T > 8.6 && T < 14.6) {
+      drawPlanet(lerp(1700, -480, (T - 8.6) / 6), 250 + Math.sin(T * .5) * 10, 150, T);
+      for (let i = 0; i < 6; i++) {
+        const sx = 1450 + i * 260 - (T - 9) * (300 + i * 40);
+        const sy = 120 + ((i * 137) % 480);
+        if (sx > -100 && sx < W + 100) drawSausage(sx, sy, 50 + (i % 3) * 18, T * (1 + i * .3));
+      }
+    }
+
+    // moon scene
+    if (T >= 14) {
+      const a = prog(T, 14, 15.5);
+      ctx.globalAlpha = a; drawEarth(1090, 150, 50); ctx.globalAlpha = 1;
+      const my = moonY(T);
+      drawMoon(640, my, 640);
+      if (T > 17.3) {
+        const fx = 790, fdx = fx - 640, fy = my - Math.sqrt(640 * 640 - fdx * fdx) + 6;
+        drawFlag(fx, fy, 150 * eOut(prog(T, 17.3, 18)), T);
+      }
+    }
+
+    const d = dogState(T);
+    drawParts(dt);
+    const noz = drawDog(d, T);
+    exhaust(noz, d.thrust, dt);
+
+    // speed lines during boost
+    if (T > 4.6 && T < 9) {
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)'; ctx.lineWidth = 2;
+      for (let i = 0; i < 10; i++) {
+        const ly = (i * 79 + 40) % H, lx = W - ((T * 1800 + i * 300) % (W + 400));
+        ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(lx + 220, ly); ctx.stroke();
+      }
+    }
+    ctx.restore();
+
+    titleCard(T);
+    caption(T);
+
+    // ending fade + loop
+    const f = prog(T, 19.2, 20);
+    if (f > 0) {
+      ctx.fillStyle = `rgba(6,8,24,${f})`; ctx.fillRect(0, 0, W, H);
+      ctx.save(); ctx.globalAlpha = Math.sin(f * Math.PI); ctx.textAlign = 'center';
+      ctx.font = '64px "Dela Gothic One", sans-serif'; ctx.fillStyle = C.mustard;
+      ctx.fillText('おしまい', W / 2, H / 2 + 20); ctx.restore();
+    }
+  }
+
+  // ---------- transport ----------
+  const playBtn = document.getElementById('play');
+  const scrub = document.getElementById('scrub');
+  const timeEl = document.getElementById('time');
+  const sceneList = document.getElementById('scenes');
+  const ICON_PLAY = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+  const ICON_PAUSE = '<svg viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>';
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let T = reduce ? 11 : 0, playing = !reduce, last = performance.now();
+
+  SCENES.forEach(s => {
+    const li = document.createElement('li');
+    const b = document.createElement('button');
+    b.type = 'button'; b.textContent = s.name; b.id = 'scene-' + s.t;
+    b.addEventListener('click', () => { T = s.t + 0.01; parts = []; });
+    li.appendChild(b); sceneList.appendChild(li);
+  });
+  const sceneBtns = [...sceneList.querySelectorAll('button')];
+
+  const fmt = t => `0:${String(Math.floor(t)).padStart(2, '0')}`;
+  function setPlaying(p) {
+    playing = p;
+    playBtn.innerHTML = p ? ICON_PAUSE : ICON_PLAY;
+    playBtn.setAttribute('aria-label', p ? '一時停止' : '再生');
+  }
+  setPlaying(playing);
+  playBtn.addEventListener('click', () => setPlaying(!playing));
+  cv.addEventListener('click', () => setPlaying(!playing));
+  document.getElementById('restart').addEventListener('click', () => { T = 0; parts = []; setPlaying(true); });
+  scrub.addEventListener('input', () => { T = scrub.value / 10; parts = []; });
+
+  function loop(now) {
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    if (playing) { T += dt; if (T >= DUR) { T = 0; parts = []; } }
+    frame(T, playing ? dt : 0);
+    if (document.activeElement !== scrub) scrub.value = Math.round(T * 10);
+    timeEl.textContent = `${fmt(T)} / 0:20`;
+    sceneBtns.forEach((b, i) => b.setAttribute('aria-current', String(T >= SCENES[i].t && T < SCENES[i].end)));
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+
+</body>
+</html>
